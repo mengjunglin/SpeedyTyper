@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class StartGameHandler : MonoBehaviour {
 
     public GameObject square;
+    public InputField inputField;
     public GameObject[] groups;
     public float spawnTime = 0.5f;
     public static Dictionary<string, GameObject> spawnDictionary;
@@ -29,6 +30,8 @@ public class StartGameHandler : MonoBehaviour {
         wordDictionary = BuildDictionary();
         wordDictKey = new string[wordDictionary.Count];
         wordDictionary.Keys.CopyTo(wordDictKey, 0);
+
+        inputField.Select();
 
         /*Vector3 clickPosition = Camera.main.ScreenToWorldPoint(new Vector3(60, 500, 0));
         clickPosition.z = 0;
@@ -93,9 +96,9 @@ public class StartGameHandler : MonoBehaviour {
         }*/
     }
 
-    /*public static void CheckAndDestroy(string key)
+    public static void CheckAndDestroy(string key)
     {
         if(spawnDictionary.ContainsKey(key))
             Destroy(spawnDictionary[key]);
-    }*/
+    }
 }

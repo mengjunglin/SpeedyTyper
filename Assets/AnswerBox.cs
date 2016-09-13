@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class AnswerBox : MonoBehaviour {
     InputField input;
@@ -21,6 +22,8 @@ public class AnswerBox : MonoBehaviour {
     private void SubmitAnswer(string arg0)
     {
         Debug.Log(arg0);
+        StartGameHandler.CheckAndDestroy(arg0.ToUpper());
         input.text = "";
+        input.OnPointerClick(new PointerEventData(EventSystem.current));
     }
 }
