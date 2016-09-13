@@ -73,21 +73,24 @@ public class StartGameHandler : MonoBehaviour {
 
     void SpawnSquare()
     {
-        // Where to spawn
-        //Vector3 clickPosition = Camera.main.ScreenToWorldPoint(new Vector3(370, 500, 0));
-        Vector3 clickPosition = Camera.main.ScreenToWorldPoint(new Vector3(Random.Range(0,11)*53+60,500,0)); //max 12 column
-        clickPosition.z = 0;
-        //GameObject obj = Instantiate(square, clickPosition, Quaternion.identity) as GameObject;
-        Debug.Log(clickPosition);
-
         word = wordDictKey[Random.Range(0, wordDictionary.Count)];
-        if (!spawnDictionary.ContainsKey(word))
+        // Where to spawn
+        //Vector3 clickPosition = Camera.main.ScreenToWorldPoint(new Vector3(80, 500, 0));
+        Vector3 clickPosition = Camera.main.ScreenToWorldPoint(new Vector3(Random.Range(0,11)*40+80,500,0));
+        clickPosition.z = 0;
+        GameObject obj = Instantiate(square, clickPosition, Quaternion.identity) as GameObject;
+        spawnDictionary.Add(word, obj);
+        Debug.Log(word);
+
+        //word = wordDictKey[Random.Range(0, wordDictionary.Count)];
+        /*if (!spawnDictionary.ContainsKey(word))
         {
             // Now we can actually spawn a bob object
             GameObject obj = Instantiate(groups[0], clickPosition, Quaternion.identity) as GameObject;
+            //obj.transform.localScale = new Vector3(2.0f, 1.0f, 1.0f);
             spawnDictionary.Add(word, obj);
             spawnIndex++;
-        }
+        }*/
     }
 
     /*public static void CheckAndDestroy(string key)
