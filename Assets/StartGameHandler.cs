@@ -7,6 +7,8 @@ public class StartGameHandler : MonoBehaviour {
 
     public GameObject square;
     public InputField inputField;
+    public static int score = 0;
+    public Text txtscore;
     public GameObject[] groups;
     public float spawnTime = 0.5f;
     public static Dictionary<string, GameObject> spawnDictionary;
@@ -46,6 +48,7 @@ public class StartGameHandler : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        txtscore.text = score.ToString();
         /*if (Input.GetMouseButtonDown(0))
         {
             Destroy(spawnDictionary[word]);
@@ -98,7 +101,13 @@ public class StartGameHandler : MonoBehaviour {
 
     public static void CheckAndDestroy(string key)
     {
-        if(spawnDictionary.ContainsKey(key))
+        if (spawnDictionary.ContainsKey(key))
+        {
             Destroy(spawnDictionary[key]);
+            spawnDictionary.Remove(key);
+            score += 500;
+        }
+        else
+            score -= 100;
     }
 }
