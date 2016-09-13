@@ -1360,7 +1360,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   square: {fileID: 222339297}
   inputField: {fileID: 1152464349}
-  score: {fileID: 1029358651}
+  txtscore: {fileID: 1029358651}
   groups:
   - {fileID: 1000010626695910, guid: a6d044c8749e7cb4ba71e0bf0dafe764, type: 2}
   spawnTime: 1
