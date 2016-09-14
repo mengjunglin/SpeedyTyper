@@ -16,6 +16,8 @@ public class StartGameHandler : MonoBehaviour {
     public string[] wordDictKey;
     public int spawnIndex = 0;
     public int destroyIndex = 0;
+	public bool spawn = true;
+	public Button pauseButton;
 
     public string alph = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     public static string word = string.Empty;
@@ -44,6 +46,10 @@ public class StartGameHandler : MonoBehaviour {
         GameObject obj2 = Instantiate(square, cp, Quaternion.identity) as GameObject;*/
 
         InvokeRepeating("SpawnSquare", spawnTime, spawnTime);
+
+		pauseButton.onClick.AddListener (() => { //something is not working here...
+			TogglePause();
+		});
     }
 	
 	// Update is called once per frame
@@ -79,17 +85,18 @@ public class StartGameHandler : MonoBehaviour {
 
     void SpawnSquare()
     {
-        word = wordDictKey[Random.Range(0, wordDictionary.Count)];
-        // Where to spawn
-        //Vector3 clickPosition = Camera.main.ScreenToWorldPoint(new Vector3(650, 1000, 0));
-        Vector3 clickPosition = Camera.main.ScreenToWorldPoint(new Vector3(Random.Range(0,9)*65+130,1000,0)); //130-650
-        clickPosition.z = 0;
-        GameObject obj = Instantiate(square, clickPosition, Quaternion.identity) as GameObject;
-        spawnDictionary.Add(word, obj);
-        Debug.Log(word);
+		if (spawn) {
+			word = wordDictKey [Random.Range (0, wordDictionary.Count)];
+			// Where to spawn
+			//Vector3 clickPosition = Camera.main.ScreenToWorldPoint(new Vector3(650, 1000, 0));
+			Vector3 clickPosition = Camera.main.ScreenToWorldPoint (new Vector3 (Random.Range (0, 9) * 65 + 130, 1000, 0)); //130-650
+			clickPosition.z = 0;
+			GameObject obj = Instantiate (square, clickPosition, Quaternion.identity) as GameObject;
+			spawnDictionary.Add (word, obj);
+			Debug.Log (word);
 
-        //word = wordDictKey[Random.Range(0, wordDictionary.Count)];
-        /*if (!spawnDictionary.ContainsKey(word))
+			//word = wordDictKey[Random.Range(0, wordDictionary.Count)];
+			/*if (!spawnDictionary.ContainsKey(word))
         {
             // Now we can actually spawn a bob object
             GameObject obj = Instantiate(groups[0], clickPosition, Quaternion.identity) as GameObject;
@@ -97,6 +104,7 @@ public class StartGameHandler : MonoBehaviour {
             spawnDictionary.Add(word, obj);
             spawnIndex++;
         }*/
+		}
     }
 
     public static void CheckAndDestroy(string key)
@@ -110,4 +118,11 @@ public class StartGameHandler : MonoBehaviour {
         else
             score -= 100;
     }
+
+	public void TogglePause()
+	{
+		spawn = !spawn;
+		inputField.enabled = !inputField.enabled;
+		Debug.Log ("toggle");
+	}
 }
