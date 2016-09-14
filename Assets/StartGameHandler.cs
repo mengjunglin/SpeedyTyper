@@ -17,7 +17,7 @@ public class StartGameHandler : MonoBehaviour {
     public int spawnIndex = 0;
     public int destroyIndex = 0;
 	public bool spawn = true;
-	public Button pauseButton;
+	public GameObject deadLine;
 
     public string alph = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     public static string word = string.Empty;
@@ -46,10 +46,6 @@ public class StartGameHandler : MonoBehaviour {
         GameObject obj2 = Instantiate(square, cp, Quaternion.identity) as GameObject;*/
 
         InvokeRepeating("SpawnSquare", spawnTime, spawnTime);
-
-		pauseButton.onClick.AddListener (() => { //something is not working here...
-			TogglePause();
-		});
     }
 	
 	// Update is called once per frame
