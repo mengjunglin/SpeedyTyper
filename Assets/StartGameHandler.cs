@@ -81,8 +81,8 @@ public class StartGameHandler : MonoBehaviour {
     {
         word = wordDictKey[Random.Range(0, wordDictionary.Count)];
         // Where to spawn
-        //Vector3 clickPosition = Camera.main.ScreenToWorldPoint(new Vector3(80, 500, 0));
-        Vector3 clickPosition = Camera.main.ScreenToWorldPoint(new Vector3(Random.Range(0,11)*40+80,500,0));
+        //Vector3 clickPosition = Camera.main.ScreenToWorldPoint(new Vector3(650, 1000, 0));
+        Vector3 clickPosition = Camera.main.ScreenToWorldPoint(new Vector3(Random.Range(0,9)*65+130,1000,0)); //130-650
         clickPosition.z = 0;
         GameObject obj = Instantiate(square, clickPosition, Quaternion.identity) as GameObject;
         spawnDictionary.Add(word, obj);
