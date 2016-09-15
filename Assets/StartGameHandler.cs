@@ -36,6 +36,7 @@ public class StartGameHandler : MonoBehaviour {
         wordDictionary.Keys.CopyTo(wordDictKey, 0);
 
         inputField.Select();
+		score = 0;
 
         /*Vector3 clickPosition = Camera.main.ScreenToWorldPoint(new Vector3(60, 500, 0));
         clickPosition.z = 0;
@@ -85,8 +86,19 @@ public class StartGameHandler : MonoBehaviour {
 			word = wordDictKey [Random.Range (0, wordDictionary.Count)];
 			// Where to spawn
 			//Vector3 clickPosition = Camera.main.ScreenToWorldPoint(new Vector3(650, 1000, 0));
-			Vector3 clickPosition = Camera.main.ScreenToWorldPoint (new Vector3 (Random.Range (0, 9) * 65 + 130, 1000, 0)); //130-650
+			Vector3 clickPosition = Camera.main.ScreenToWorldPoint (new Vector3 (Random.Range (0, 9) * 65 + 130, 500, 0)); //130-650
 			clickPosition.z = 0;
+
+			RectTransform rt = (RectTransform)square.transform;
+			float w = rt.rect.width;
+			float h = rt.rect.height;
+			Debug.Log (w + "," + h);
+			if(Physics2D.OverlapBox (clickPosition, new Vector2(w, h), 0f) != null)
+			{
+				GameOver ();
+			}
+
+
 			GameObject obj = Instantiate (square, clickPosition, Quaternion.identity) as GameObject;
 			spawnDictionary.Add (word, obj);
 			Debug.Log (word);
@@ -120,5 +132,13 @@ public class StartGameHandler : MonoBehaviour {
 		spawn = !spawn;
 		inputField.enabled = !inputField.enabled;
 		Debug.Log ("toggle");
+	}
+
+	void GameOver()
+	{
+		spawn = !spawn;
+		inputField.enabled = !inputField.enabled;
+		Debug.Log ("Game Over D:");
+		Application.LoadLevel ("GameOverScene");
 	}
 }
