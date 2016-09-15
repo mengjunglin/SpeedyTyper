@@ -9,8 +9,9 @@ public class StartGameHandler : MonoBehaviour {
     public InputField inputField;
     public static int score = 0;
     public Text txtscore;
+	public Text txtSpeed;
     public GameObject[] groups;
-    public float spawnTime = 0.5f;
+    public float spawnTime;
     public static Dictionary<string, GameObject> spawnDictionary;
     public Dictionary<string, string> wordDictionary;
     public string[] wordDictKey;
@@ -19,9 +20,19 @@ public class StartGameHandler : MonoBehaviour {
 	public bool spawn = true;
 	public GameObject deadLine;
 	public TextAsset textAsset;
+	public Slider sSpeed;
+	public static float currentSpeed;
 
     public string alph = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     public static string word = string.Empty;
+	public Dictionary<float, float> SpeedScale = new Dictionary<float, float> ()
+	{
+		{1f, 2.5f}, 
+		{2f, 2f}, 
+		{3f, 1.5f}, 
+		{4f, 1f}, 
+		{5f, 0.5f}
+	};
 
     void Start()
     {
@@ -32,13 +43,33 @@ public class StartGameHandler : MonoBehaviour {
 
         inputField.Select();
 		score = 0;
+		currentSpeed = sSpeed.value;
+		spawnTime = SpeedScale[currentSpeed];
 
-        InvokeRepeating("SpawnSquare", spawnTime, spawnTime);
+        //InvokeRepeating("SpawnSquare", spawnTime, spawnTime);
+		StartCoroutine(Spawnning());
     }
+
+	IEnumerator Spawnning()
+	{
+		while (true) {
+			yield return new WaitForSeconds (spawnTime);
+			SpawnSquare ();
+		}
+	}
 	
 	// Update is called once per frame
 	void Update () {
+		if (Input.GetKeyDown (KeyCode.UpArrow)) {
+			sSpeed.value += 1f;
+		}
+		if (Input.GetKeyDown (KeyCode.DownArrow)) {
+			sSpeed.value -= 1f;
+		}
+		currentSpeed = sSpeed.value;
         txtscore.text = score.ToString();
+		spawnTime = SpeedScale[currentSpeed];
+		txtSpeed.text = currentSpeed.ToString ();
     }
 
     Dictionary<string, string> BuildDictionary()
@@ -80,17 +111,17 @@ public class StartGameHandler : MonoBehaviour {
         {
             Destroy(spawnDictionary[key]);
             spawnDictionary.Remove(key);
-            score += 500;
+			score += 300 * (int)currentSpeed;
         }
         else
-            score -= 100;
+			score -= 100 * (int)currentSpeed;
     }
 
 	public void TogglePause()
 	{
 		spawn = !spawn;
 		inputField.enabled = !inputField.enabled;
-		Debug.Log ("toggle");
+		Debug.Log ("toggle="+spawn);
 	}
 
 	void GameOver()
