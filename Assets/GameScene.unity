@@ -1512,6 +1512,7 @@ MonoBehaviour:
   destroyIndex: 0
   spawn: 1
   deadLine: {fileID: 0}
+  textAsset: {fileID: 4900000, guid: 61f0786403cf9e84c873f00b32ea1496, type: 3}
   alph: ABCDEFGHIJKLMNOPQRSTUVWXYZ
 --- !u!4 &1337411393
 Transform:
