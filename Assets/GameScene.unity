@@ -2054,17 +2054,10 @@ MonoBehaviour:
   inputField: {fileID: 1152464349}
   txtscore: {fileID: 1029358651}
   txtSpeed: {fileID: 960368310}
-  groups:
-  - {fileID: 1000010626695910, guid: a6d044c8749e7cb4ba71e0bf0dafe764, type: 2}
-  spawnTime: 1
   wordDictKey: []
-  spawnIndex: 0
-  destroyIndex: 0
   spawn: 1
-  deadLine: {fileID: 0}
   textAsset: {fileID: 4900000, guid: 61f0786403cf9e84c873f00b32ea1496, type: 3}
   sSpeed: {fileID: 307505968}
-  alph: ABCDEFGHIJKLMNOPQRSTUVWXYZ
 --- !u!4 &1337411393
 Transform:
   m_ObjectHideFlags: 0

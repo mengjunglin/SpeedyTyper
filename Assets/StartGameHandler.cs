@@ -4,27 +4,26 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 
 public class StartGameHandler : MonoBehaviour {
+	private static Dictionary<string, GameObject> spawnDictionary; //keeps track of the objects that are spawned
+	private Dictionary<string, string> wordDictionary; //store words from the text file
+	private string[] wordDictKey;
+	private float spawnTime; //time to wait before spawning the next object
+	private bool spawn = true;
 
+	// Controls on the game scene
     public GameObject square;
     public InputField inputField;
-    public static int score = 0;
     public Text txtscore;
 	public Text txtSpeed;
-    public GameObject[] groups;
-    public float spawnTime;
-    public static Dictionary<string, GameObject> spawnDictionary;
-    public Dictionary<string, string> wordDictionary;
-    public string[] wordDictKey;
-    public int spawnIndex = 0;
-    public int destroyIndex = 0;
-	public bool spawn = true;
-	public GameObject deadLine;
 	public TextAsset textAsset;
 	public Slider sSpeed;
-	public static float currentSpeed;
 
-    public string alph = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	//public static variables that will need to be accessed from another class
+	public static int score = 0;
+	public static float currentSpeed;
     public static string word = string.Empty;
+
+	// mapping the speed shown on the game scene and the actual spawn time
 	public Dictionary<float, float> SpeedScale = new Dictionary<float, float> ()
 	{
 		{1f, 2.5f}, 
@@ -36,17 +35,18 @@ public class StartGameHandler : MonoBehaviour {
 
     void Start()
     {
+		// initializa the dictionary
         spawnDictionary = new Dictionary<string, GameObject>();
         wordDictionary = BuildDictionary();
         wordDictKey = new string[wordDictionary.Count];
         wordDictionary.Keys.CopyTo(wordDictKey, 0);
 
+		// reset the game scene
         inputField.Select();
 		score = 0;
 		currentSpeed = sSpeed.value;
 		spawnTime = SpeedScale[currentSpeed];
 
-        //InvokeRepeating("SpawnSquare", spawnTime, spawnTime);
 		StartCoroutine(Spawnning());
     }
 
@@ -60,18 +60,22 @@ public class StartGameHandler : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		// updating speed of the game
 		if (Input.GetKeyDown (KeyCode.UpArrow)) {
 			sSpeed.value += 1f;
 		}
 		if (Input.GetKeyDown (KeyCode.DownArrow)) {
 			sSpeed.value -= 1f;
 		}
+
+		// updating values on UI
 		currentSpeed = sSpeed.value;
         txtscore.text = score.ToString();
 		spawnTime = SpeedScale[currentSpeed];
 		txtSpeed.text = currentSpeed.ToString ();
     }
 
+	// Build the dictionary from the TextAsset, which is the text file containing the wordrs
     Dictionary<string, string> BuildDictionary()
     {
         Dictionary<string, string> dict = new Dictionary<string, string>();
@@ -83,12 +87,13 @@ public class StartGameHandler : MonoBehaviour {
         return dict;
     }
 
+	// spawing the square/object
     void SpawnSquare()
     {
 		if (spawn) {
 			word = wordDictKey [Random.Range (0, wordDictionary.Count)];
+
 			// Where to spawn
-			//Vector3 clickPosition = Camera.main.ScreenToWorldPoint(new Vector3(650, 1000, 0));
 			Vector3 spawnPosition = Camera.main.ScreenToWorldPoint (new Vector3 (Random.Range (0, 9) * 65 + 130, 550, 0)); //130-650
 			spawnPosition.z = 0;
 
@@ -96,12 +101,15 @@ public class StartGameHandler : MonoBehaviour {
 			RectTransform rt = (RectTransform)square.transform;
 			float w = rt.rect.width;
 			float h = rt.rect.height;
-			if(Physics2D.OverlapBox (spawnPosition, new Vector2(w, h), 0f) != null)
-				GameOver ();
 
-			GameObject obj = Instantiate (square, spawnPosition, Quaternion.identity) as GameObject;
-			spawnDictionary.Add (word, obj);
-			Debug.Log (word);
+			// game over if object will overlap another object at spawning
+			if (Physics2D.OverlapBox (spawnPosition, new Vector2 (w, h), 0f) != null)
+				GameOver ();
+			else {
+				GameObject obj = Instantiate (square, spawnPosition, Quaternion.identity) as GameObject;
+				spawnDictionary.Add (word, obj);
+				Debug.Log (word);
+			}
 		}
     }
 
@@ -121,7 +129,6 @@ public class StartGameHandler : MonoBehaviour {
 	{
 		spawn = !spawn;
 		inputField.enabled = !inputField.enabled;
-		Debug.Log ("toggle="+spawn);
 	}
 
 	void GameOver()

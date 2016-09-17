@@ -9,7 +9,6 @@ public class UpdateSquareText : MonoBehaviour {
 	void Start () {
         textObject = GetComponent<Text>();
         textObject.text = StartGameHandler.word;
-
 	}
 	
 	// Update is called once per frame
